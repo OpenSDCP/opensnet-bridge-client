@@ -1,4 +1,4 @@
-<!-- OpenSNET Bridge Client User Interface (c) Felix Pojtinger-->
+<!-- OpenSNET Bridge Client User Interface by Felix Pojtinger-->
 <template>
 <v-app
   toolbar
@@ -14,6 +14,7 @@
     v-if="permaDrawer.active"
     :mini-variant.sync="permaDrawer.minified"
   >
+
     <!-- PERMANENT DRAWER MINIFIER -->
     <v-list>
       <v-list-tile
@@ -120,12 +121,12 @@
               v-bind:search="historyItems.search"
               class="permaDrawer-table"
             >
-              <template slot="items" slot-scope="props">
+              <template slot="items" scope="props">
                     <td>{{ props.item.date }}</td>
                     <td>{{ props.item.change }}</td>
                     <td>{{ props.item.user }}</td>
                   </template>
-              <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+              <template slot="pageText" scope="{ pageStart, pageStop }">
                     From {{ pageStart }} to {{ pageStop }}
                   </template>
             </v-data-table>
@@ -133,9 +134,10 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
 
+      <v-divider></v-divider>
+
       <!-- PERMANENT DRAWER CONNECTIONS SECTION -->
       <v-expansion-panel expand v-if="!permaDrawer.minified">
-        <v-divider></v-divider>
         <v-expansion-panel-content v-model="permaDrawer.expansionsPanels.connections.expanded">
           <div slot="header">
             <v-layout>
@@ -293,9 +295,10 @@
       </v-expansion-panel-content>
       </v-expansion-panel>
 
+      <v-divider></v-divider>
+
       <!-- PERMANENT DRAWER MISCELLANEOUS SECTION -->
       <v-expansion-panel expand v-if="!permaDrawer.minified">
-        <v-divider></v-divider>
         <v-expansion-panel-content v-model="permaDrawer.expansionsPanels.misc.expanded">
           <div slot="header">
             <!-- MISCELLANEOUS SECTION CONTROLS AND HEADER-->
@@ -796,12 +799,12 @@
                   v-bind:items="historyItems.items"
                   v-bind:search="historyItems.search"
                 >
-                  <template slot="items" slot-scope="props">
+                  <template slot="items" scope="props">
                         <td>{{ props.item.date }}</td>
                         <td>{{ props.item.change }}</td>
                         <td>{{ props.item.user }}</td>
                       </template>
-                  <template slot="pageText" slot-scope="{ pageStart, pageStop }">
+                  <template slot="pageText" scope="{ pageStart, pageStop }">
                         From {{ pageStart }} to {{ pageStop }}
                       </template>
                 </v-data-table>
@@ -824,14 +827,14 @@
             v-bind:items="historyItems.items"
             v-bind:search="historyItems.search"
           >
-            <template slot="items" slot-scope="props">
+            <template slot="items" scope="props">
                 <td>{{ props.item.date }}</td>
                 <td>{{ props.item.change }}</td>
                 <td>{{ props.item.user }}</td>
               </template>
             <template
               slot="pageText"
-              slot-scope="{ pageStart, pageStop }"
+              scope="{ pageStart, pageStop }"
             >
                 From {{ pageStart }} to {{ pageStop }}
               </template>
@@ -1186,7 +1189,7 @@
                v-tooltip:left="{ html: 'Delete, open or insert a new dashboard layout or module' }"
                v-show="floatingActionButton.visible"
                >
-          <v-icon>mode_edit</v-icon>
+          <v-icon>add</v-icon>
           <v-icon>close</v-icon>
         </v-btn>
 
@@ -1347,10 +1350,10 @@
                dark
                small
                class="green"
-               v-tooltip:left="{ html: 'Manage, download or insert dashboard layouts on OpenSNET Bridge Server' }"
+               v-tooltip:left="{ html: 'Download and insert dashboard layout from OpenSNET Bridge Server' }"
                slot="activator"
                >
-            <v-icon >queue</v-icon>
+          <v-icon >cloud_download</v-icon>
         </v-btn>
 
         <!-- The @click attribute is needed in order to prevent the listener of the FAB from closing the bottom sheet -->
@@ -1483,16 +1486,6 @@
           <v-icon>delete</v-icon>
         </v-btn>
 
-        <v-btn
-               fab
-               dark
-               small
-               class="green"
-               v-tooltip:left="{ html: 'Create dashboard layout on OpenSNET Bridge Server' }"
-               >
-          <v-icon >add</v-icon>
-        </v-btn>
-
         <div class="fab-text">
           <v-layout row align-center>
             <v-flex class="mr-1" xs-6>
@@ -1533,7 +1526,7 @@
   <!-- MAIN CONTENT -->
   <main>
     <v-container fluid grid-list-lg class="main-container-margin">
-      <!-- Main View -->
+      <!--v-router-content will go here one day-->
       <router-view></router-view>
     </v-container>
   </main>
@@ -1541,8 +1534,6 @@
 </template>
 
 <script>
-// Import the layout editing mode helpers from vuex
-import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -1627,7 +1618,7 @@ export default {
       // Initial definitions for the floating action button
       floatingActionButton: {
         active: false,
-        visible: this.$store.state.currentDashboardlayout.editable
+        visible: true
       },
 
       // Initial defintions for the dashboard element dialogs
@@ -1822,8 +1813,8 @@ export default {
           },
           {
             title: 'Layout editing mode',
-            vModel: 'this.currentDashboardlayoutEditable',
-            action: 'toggleFloatingActionButton(), this.toggleDashboardLayoutEditingMode()'
+            vModel: 'this.floatingActionButton.visible',
+            action: 'toggleFloatingActionButton()'
           },
           {
             title: 'Responsive auto-ui-hiding',
@@ -1943,9 +1934,6 @@ export default {
     '$mq.resize': 'drawerOptimizer'
   },
   computed: {
-    ...mapGetters([
-      'currentDashboardlayoutEditable'
-    ]),
     // Determine whether it is day or night in order to switch night modes
     isItDay: function () {
       this.userEnvironment.currentHourOfTheDay = new Date().getHours()
@@ -1961,9 +1949,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'toggleDashboardLayoutEditingMode' // Enable the toggling of the dashboard layout editing mode
-    ]),
     drawerOptimizer () {
       // On xs and down: do everything like on sm to xs but shift (minify) the bottom navigation to fit the screen
       if (this.$mq.below(370)) {
@@ -2437,7 +2422,7 @@ export default {
 
 // Only open tooltip after a long press/hover
 [data-tooltip]:hover:before {
-    transition-delay: 0.75s;
+    transition-delay: 1.5s;
 }
 
 // Move the FAB up on small devices to prevent it from being hidden by the bottom navigation bar

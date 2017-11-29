@@ -1,29 +1,16 @@
 <template lang="html">
-  <div>
-    <!-- <b>From the parent: </b>{{ dashboardLayoutStart }} -->
-    <opensnet-grid-template :layouts="dashboardLayoutComms" :editable="currentDashboardlayoutEditable"></opensnet-grid-template>
-  </div>
+    <div>
+      <v-card>
+        <v-card-title>
+          <h3 class="headline">Communications</h3>
+        </v-card-title>
+      </v-card>
+    </div>
 </template>
 
 <script>
-// Import the grid template to display the gridLayout
-import GridTemplate from './Grid/GridTemplate'
-// Import the helper getters for the editable dashboard layout mode from vuex
-import { mapGetters } from 'vuex'
-export default {
-  // Register the grid template component to be able to load it
-  components: {
-    'opensnet-grid-template': GridTemplate
-  },
-  computed: {
-    ...mapGetters([
-      'currentDashboardlayoutEditable',
-      'dashboardLayoutComms'
-    ])
-  }
-}
+export default {}
 </script>
 
 <style lang="css">
-
 </style>

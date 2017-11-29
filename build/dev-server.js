@@ -62,10 +62,9 @@ app.use(hotMiddleware)
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-// use http://192.168.178.59:(in my case, look it up with "ip a") as your IP address if you want to share the server in your LAN Network, otherwise use localhost:.
-
+// use http://192.168.178.59:(in my case) or localhost: as your IP adress if you want to share the server in your LAN Network
 // use localhost.me or ngrok if you want to share the server to the internet
-var uri = 'http://localhost:' + port
+var uri = 'http://192.168.178.59:' + port
 
 var _resolve
 var readyPromise = new Promise(resolve => {
