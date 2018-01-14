@@ -154,14 +154,15 @@
           </v-card-title>
 
           <!-- Card Message Section -->
-          <!-- <v-layout row v-show="alert" class="mb-3 resizable-card-wrapper-section-main"> -->
-            <!-- <v-flex>
-              <v-alert info dismissible v-model="alert"> -->
+          <!-- Show the card message section if the wrapper is active and an alert can be shown -->
+          <v-layout row v-show="alertWrapperActivated && alert" class="mb-3 resizable-card-wrapper-section-main">
+            <v-flex>
+              <v-alert info dismissible v-model="alert">
                 <!-- TODO: Card Info Component Integration -->
-                <!-- Info section here
+                {{ logs }}
               </v-alert>
             </v-flex>
-          </v-layout> -->
+          </v-layout>
 
           <!-- Card Main Section -->
           <v-card-text class="pt-0">
@@ -264,7 +265,7 @@
 
 <script>
 // Import the helper getters and actions for the editable dashboard layout mode from vuex
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'GridItem',
   props: {
@@ -309,6 +310,18 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'logs'
+    ]),
+    alertWrapperActivated () {
+      console.log(this.logs)
+      console.log(this.item.hybridView)
+      if (this.logs.findIndex(log => log.origin === this.item.hybridView) !== -1) {
+        return false
+      } else {
+        return true
+      }
+    },
     column () {
       var column = {}
 

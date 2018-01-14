@@ -672,7 +672,7 @@ const state = {
     logs: [
       {
         type: 'error',
-        origin: 'alphaHorizonReactionWheel',
+        origin: 'alphaHorizonReactionWheelDashboardHybridView',
         message: 'A short, helpful example error message',
         code: 'YOUR_ERROR_CODE_IN_CAPS',
         infoUrl: 'https://www.opensdcp.org',
@@ -772,6 +772,26 @@ const actions = {
     })
   },
   logDebugMessage ({commit}, {origin, message, code, infoUrl, dismissible}) {
+    commit('logMessage', {
+      type: 'debug',
+      origin: origin,
+      message: message,
+      code: code,
+      infoUrl: infoUrl,
+      dismissible: dismissible
+    })
+  },
+  logWarningMessage ({ commit }, { origin, message, code, infoUrl, dismissible }) {
+    commit('logMessage', {
+      type: 'warning',
+      origin: origin,
+      message: message,
+      code: code,
+      infoUrl: infoUrl,
+      dismissible: dismissible
+    })
+  },
+  logErrorMessage ({ commit }, { origin, message, code, infoUrl, dismissible }) {
     commit('logMessage', {
       type: 'debug',
       origin: origin,

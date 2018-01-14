@@ -9,9 +9,6 @@
       :groupName="'start'"
       :layoutName="1"
     ></opensnet-grid-template>
-    <!-- <v-btn @click="logDebugMessage({origin: 'dashboardLayout', message: 'A quick test debug message', code: 'TEST_DEBUG_MESSAGE', infoUrl: 'https://opensdcp.github.io/', dismissible: true})">
-      Log a debug message
-    </v-btn> -->
   </div>
 </template>
 
